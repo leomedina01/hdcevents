@@ -37,21 +37,17 @@
         </div>
         <div class="form-group">
             <label for="items">Add Infrastructure Items:</label>
-            <div class="form-group">
-                <input type="checkbox" name="items[]" value="Chairs">Chairs
-            </div>
-            <div class="form-group">
-                <input type="checkbox" name="items[]" value="Stage">Stage
-            </div>
-            <div class="form-group">
-                <input type="checkbox" name="items[]" value="Free Beer">Free Beer
-            </div>
-            <div class="form-group">
-                <input type="checkbox" name="items[]" value="Open Food">Open Food
-            </div>
-            <div class="form-group">
-                <input type="checkbox" name="items[]" value="Gifts">Gifts
-            </div>
+            @foreach ($items as $item)
+                <div class="form-group">
+                    <input type="checkbox" 
+                    name="items[]"
+                    value="{{ $item }}" 
+                    @if ( null !== old('items') && is_array(old('items')) && in_array($item, old('items')))
+                        checked="checked"  
+                    @endif
+                    >{{ $item }}
+                </div>    
+            @endforeach
         </div>
         <input type="submit" class="btn btn-primary" value="Create Event">
     </form>

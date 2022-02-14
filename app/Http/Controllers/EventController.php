@@ -13,6 +13,14 @@ use  App\Http\Requests\StoreEventRequest;
 
 class EventController extends Controller
 {
+    private $items = [
+        'Chairs',
+        'Stage',
+        'Free Beer',
+        'Open Food',
+        'Gifts'
+    ];
+    
     /**
      * Check if user is the owner of an event
      */
@@ -61,7 +69,9 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view ('events.create');
+        return view ('events.create', [
+            'items' => $this->items
+        ]);
     }
 
     /**
@@ -138,7 +148,10 @@ class EventController extends Controller
             return redirect (route('events'));
         }
 
-        return view('events.edit', ['event' => $event]);
+        return view('events.edit', [
+                    'event' => $event,
+                    'items' => $this->items
+                ]);
     }
 
     /**
