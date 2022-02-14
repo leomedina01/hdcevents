@@ -43,6 +43,12 @@ header {
     padding: 10px;
 }
 
+.error-msg {
+    color:brown;
+    background-color:antiquewhite;
+    border:lavenderblush;
+}
+
 #info-container .already-joined-msg {
     margin: 15px 0;
     color: #004085;

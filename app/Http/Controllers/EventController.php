@@ -8,6 +8,9 @@ use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
+use Illuminate\Support\Facades\Validator;
+use  App\Http\Requests\StoreEventRequest;
+
 class EventController extends Controller
 {
     /**
@@ -67,8 +70,11 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
         $event = new Event();
         $event->title = $request->title;
         $event->city = $request->city;
@@ -80,7 +86,7 @@ class EventController extends Controller
             $requestImage = $request->image;
             $ext = $requestImage->extension();
             $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) . '.' . $ext;
-            $requestImage->move(public_path('img/events'), $imageName);
+            $requestImage->move(public_path(env('APP_EVENT_IMG_PATH')), $imageName);
             $event->image = $imageName;
         }
 
@@ -142,8 +148,11 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreEventRequest $request, $id)
     {
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
         $data = $request->all();
         $event = Event::findOrFail($request->id);
         
@@ -153,17 +162,23 @@ class EventController extends Controller
             return redirect (route('events'));
         }
 
-        $event->update($data);
-
         //Image upload
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
             $ext = $requestImage->extension();
             $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) . '.' . $ext;
-            $requestImage->move(public_path('img/events'), $imageName);
+
+            /*var_dump(public_path(env('APP_EVENT_IMG_PATH')));
+            var_dump($imageName);
+            die;*/
+
+            $requestImage->move(public_path(env('APP_EVENT_IMG_PATH')), $imageName);
             $data['image'] = $imageName;
         }
 
+        $event->update($data);
+
+        //var_dump($data); die;
         return redirect (route('dashboard'))->with('msg', 'Event updated sucessfully');
     }
 

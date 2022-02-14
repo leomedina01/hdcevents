@@ -63,9 +63,19 @@
         <main>
             <div class="container-fluid">
                 <div class="row">
-                    @if (session('msg'))
-                        <p class="msg">{{ session('msg') }}</p>
+                    
+                    @if ($errors->any())
+                        <ul class="msg error-msg">
+                            @foreach ($errors->all() as $error)
+                                <li>{{  $error }}</li>
+                            @endforeach  
+                        </ul>  
+                    @else
+                        @if (session('msg'))
+                            <p class="msg">{{ session('msg') }}</p>
+                        @endif
                     @endif
+
                     @yield('content')
                 </div>
             </div>

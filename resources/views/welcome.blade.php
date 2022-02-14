@@ -28,7 +28,7 @@
             @else
                 @foreach ($events as $event)
                     <div class="card col-md-3">
-                        <img src="{{ url('/') }}/img/events/{{ $event->image }}" alt="{{ $event->title }}">
+                        <img src="{{ url('/') }}/{{ env('APP_EVENT_IMG_PATH') }}/{{ $event->image }}" alt="{{ $event->title }}">
                         <div class="card-body">
                             <p class="card-date">{{ date('d/m/Y', strtotime($event->date)) }}</p>
                             <h5 class="card-title">{{ $event->title }}</h5>
